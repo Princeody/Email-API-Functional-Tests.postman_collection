@@ -1,2 +1,12 @@
-# Email-API-Functional-Tests.postman_collection
-A valid request returns 202 • Missing to returns 400 • Invalid email returns 400 • Simulate queue full returns 503 (if not feasible, just document your approach)
+# Email Queue API Automation
+
+## Endpoint
+POST /api/send-email
+
+## Expected Responses
+- 202 Accepted
+- 422 Bad Request
+- 503 Service Unavailable
+
+## How to Run
+Import collection into Postman and run using Collection Runner.
