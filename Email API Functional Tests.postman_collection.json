@@ -1,0 +1,180 @@
+{
+  "info": {
+    "_postman_id": "1ffb280f-f93c-444e-8c60-402008ea247d",
+    "name": "Email API Functional Tests",
+    "description": "Automated functional tests for Email API using Postman",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "45890139",
+    "_collection_link": "https://go.postman.co/collection/45890139-1ffb280f-f93c-444e-8c60-402008ea247d?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Valid Request - 202",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status code is 202', function () {",
+              "    pm.response.to.have.status(202);",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"to\": \"user@example.com\", \"subject\": \"Welcome!\", \"body\": \"Thanks for signing up.\"}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/send-email",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "send-email"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Missing 'to' - 400",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 400 when 'to' is missing\", function () {",
+              "    pm.response.to.have.status(400);",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"subject\": \"Welcome!\", \"body\": \"Thanks for signing up.\"}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/send-email",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "send-email"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Invalid Email - 400",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status code is 400 for invalid email', function () {",
+              "    pm.response.to.have.status(400);",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"to\": \"invalid-email-format\", \"subject\": \"Welcome!\", \"body\": \"Thanks for signing up.\"}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/send-email",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "send-email"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Simulate Queue Full - 503",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status code is 503 when queue is full', function () {",
+              "    pm.response.to.have.status(503);",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Simulate-Queue",
+            "value": "full"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"to\": \"user@example.com\", \"subject\": \"Welcome!\", \"body\": \"Trigger queue overflow.\"}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/send-email",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "send-email"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}
